@@ -1,3 +1,5 @@
+//  FIX: Popping a scope does not remove its variables from the variable dictionary
+
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 use crate::variable::Variable;
