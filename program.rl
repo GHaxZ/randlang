@@ -1,11 +1,11 @@
 var x = "test"
 
+var y = 69 
+var z = 3.14
 
-var int = 69 # This is a comment
-var dec = 3.14
-
-int = 420
+y = y * 21
 
 {
-  var bool = true
+  y == 69 * 21
+  var a = true
 }

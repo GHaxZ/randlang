@@ -1,11 +1,12 @@
-//  FIX: Popping a scope does not remove its variables from the variable dictionary
+//  PERF: Reference variables instead of cloning
+//          - safes lots of memory in case of many nested scopes
 
-use std::{cell::RefCell, collections::HashMap, rc::Rc};
+use std::collections::HashMap;
 
 use crate::variable::Variable;
 
 pub struct Scope {
-    variables: HashMap<String, Rc<RefCell<Variable>>>,
+    variables: HashMap<String, Variable>,
 }
 
 impl Scope {
@@ -15,18 +16,18 @@ impl Scope {
         }
     }
 
-    pub fn inherit(parent: &Scope) -> Self {
+    fn inherit(parent: &Scope) -> Self {
         Self {
             variables: parent.variables.clone(),
         }
     }
 
-    pub fn variable_set(&mut self, name: String, variable: Rc<RefCell<Variable>>) {
+    fn variable_set(&mut self, name: String, variable: Variable) {
         self.variables.insert(name, variable);
     }
 
-    pub fn variable_get(&self, name: &str) -> Option<Variable> {
-        self.variables.get(name).map(|rc| rc.borrow().clone())
+    fn variable_get(&self, name: &str) -> Option<&Variable> {
+        self.variables.get(name)
     }
 }
 
@@ -52,5 +53,19 @@ impl ScopeStack {
     pub fn push(&mut self) {
         let new_scope = Scope::inherit(self.stack.last().unwrap());
         self.stack.push(new_scope);
+    }
+
+    pub fn variable_set(&mut self, name: String, variable: Variable) {
+        self.peek().variable_set(name, variable);
+    }
+
+    pub fn variable_get(&self, name: &str) -> Option<&Variable> {
+        for scope in self.stack.iter().rev() {
+            if let Some(variable) = scope.variable_get(name) {
+                return Some(variable);
+            }
+        }
+
+        None
     }
 }
