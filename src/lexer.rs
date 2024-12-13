@@ -73,7 +73,6 @@ impl Lexer {
     fn read_string(&mut self) -> Token {
         let mut value = String::new();
 
-        println!("Entering read_string loop");
         while let Some(c) = self.advance() {
             if c == '"' {
                 break;
@@ -140,10 +139,10 @@ impl Lexer {
         character.is_alphanumeric() || character == '_'
     }
 
+    //  TODO: Create check_symbol function similar to check_keyword for operators and delimiters
     fn next_token(&mut self) -> Option<Token> {
         let mut current = String::new();
 
-        println!("Entering next_token loop");
         while let Some(c) = self.advance() {
             current.push(c);
 
@@ -213,7 +212,11 @@ impl Lexer {
         let mut tokens: Vec<Token> = Vec::new();
 
         while let Some(token) = lexer.next_token() {
-            tokens.push(token);
+            match token {
+                Token::Whitespace => {}
+                Token::Comment => {}
+                t => tokens.push(t),
+            }
         }
 
         tokens
