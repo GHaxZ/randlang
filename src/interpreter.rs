@@ -1,7 +1,4 @@
-use crate::{
-    lexer::{Lexer, Token},
-    scope::{Scope, ScopeStack},
-};
+use crate::{lexer::Lexer, scope::ScopeStack};
 use anyhow::Result;
 
 pub struct Interpreter {
