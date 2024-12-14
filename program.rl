@@ -9,4 +9,7 @@ y=y*21
 {
   y == 69 * 21
   var a = true
+  {
+    var a = "Variable shadowing works"
+  }
 }

@@ -199,9 +199,7 @@ impl Lexer {
                 _ => Some(Token::Unknown(current.clone())),
             };
 
-            if let Some(tok) = token {
-                return Some(tok);
-            }
+            return token;
         }
 
         None

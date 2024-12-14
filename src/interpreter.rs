@@ -12,7 +12,9 @@ impl Interpreter {
         }
     }
 
-    pub fn interpret(&self, content: String) -> Result<()> {
+    pub fn interpret(content: String) -> Result<()> {
+        let inter = Self::new();
+
         let tokens = Lexer::tokenize(content.as_str());
 
         for token in tokens {
